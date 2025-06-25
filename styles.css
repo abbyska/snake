@@ -1,0 +1,293 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Orbitron', monospace;
+    background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #ffffff;
+    overflow: hidden;
+}
+
+.game-container {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    max-width: 500px;
+    width: 100%;
+}
+
+.game-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.game-title {
+    font-size: 2.5rem;
+    font-weight: 900;
+    background: linear-gradient(45deg, #00ff88, #00ccff, #ff0088);
+    background-size: 200% 200%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: gradientShift 3s ease-in-out infinite;
+    margin-bottom: 20px;
+    text-shadow: 0 0 20px rgba(0, 255, 136, 0.5);
+}
+
+@keyframes gradientShift {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+}
+
+.score-board {
+    display: flex;
+    justify-content: space-around;
+    gap: 20px;
+}
+
+.score-item {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 15px 25px;
+    border-radius: 15px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(5px);
+}
+
+.score-label {
+    display: block;
+    font-size: 0.9rem;
+    color: #cccccc;
+    margin-bottom: 5px;
+}
+
+.score-value {
+    display: block;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #00ff88;
+    text-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
+}
+
+.game-area {
+    position: relative;
+    margin-bottom: 30px;
+    display: flex;
+    justify-content: center;
+}
+
+#gameCanvas {
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    border-radius: 15px;
+    background: rgba(0, 0, 0, 0.3);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    transition: all 0.3s ease;
+}
+
+#gameCanvas:hover {
+    border-color: rgba(0, 255, 136, 0.5);
+    box-shadow: 0 15px 40px rgba(0, 255, 136, 0.2);
+}
+
+.game-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(5px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 15px;
+    transition: opacity 0.3s ease;
+}
+
+.game-overlay.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.overlay-content {
+    text-align: center;
+    padding: 30px;
+}
+
+.overlay-content h2 {
+    font-size: 2rem;
+    margin-bottom: 15px;
+    color: #00ff88;
+    text-shadow: 0 0 15px rgba(0, 255, 136, 0.5);
+}
+
+.overlay-content p {
+    font-size: 1.1rem;
+    margin-bottom: 20px;
+    color: #cccccc;
+}
+
+.controls-info {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 20px;
+    border-radius: 10px;
+    margin: 20px 0;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.controls-info p {
+    font-size: 0.9rem;
+    margin-bottom: 8px;
+    color: #aaaaaa;
+}
+
+.controls-info p:last-child {
+    margin-bottom: 0;
+}
+
+.game-button {
+    background: linear-gradient(45deg, #00ff88, #00ccff);
+    border: none;
+    padding: 15px 30px;
+    border-radius: 25px;
+    font-family: 'Orbitron', monospace;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #000;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 15px rgba(0, 255, 136, 0.3);
+}
+
+.game-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 255, 136, 0.4);
+}
+
+.game-button:active {
+    transform: translateY(0);
+}
+
+.game-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.control-buttons {
+    display: flex;
+    gap: 15px;
+}
+
+.control-button {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 10px 20px;
+    border-radius: 10px;
+    font-family: 'Orbitron', monospace;
+    font-size: 0.9rem;
+    color: #ffffff;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(5px);
+}
+
+.control-button:hover {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: rgba(0, 255, 136, 0.5);
+    transform: translateY(-1px);
+}
+
+.control-button:active {
+    transform: translateY(0);
+}
+
+.difficulty-selector {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.difficulty-selector label {
+    font-size: 0.9rem;
+    color: #cccccc;
+}
+
+.difficulty-select {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 8px 15px;
+    border-radius: 8px;
+    font-family: 'Orbitron', monospace;
+    font-size: 0.9rem;
+    color: #ffffff;
+    cursor: pointer;
+    backdrop-filter: blur(5px);
+    transition: all 0.3s ease;
+}
+
+.difficulty-select:hover {
+    border-color: rgba(0, 255, 136, 0.5);
+}
+
+.difficulty-select option {
+    background: #1a1a2e;
+    color: #ffffff;
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+    .game-container {
+        padding: 20px;
+        margin: 10px;
+    }
+    
+    .game-title {
+        font-size: 2rem;
+    }
+    
+    .score-board {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    #gameCanvas {
+        width: 300px;
+        height: 300px;
+    }
+    
+    .game-controls {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .control-buttons {
+        justify-content: center;
+    }
+    
+    .difficulty-selector {
+        justify-content: center;
+    }
+}
+
+/* Animation for score updates */
+@keyframes scorePulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+
+.score-value.updated {
+    animation: scorePulse 0.3s ease-in-out;
+} 

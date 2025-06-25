@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Snake Game</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="game-container">
+        <header class="game-header">
+            <h1 class="game-title">🐍 SNAKE GAME</h1>
+            <div class="score-board">
+                <div class="score-item">
+                    <span class="score-label">Score:</span>
+                    <span id="score" class="score-value">0</span>
+                </div>
+                <div class="score-item">
+                    <span class="score-label">High Score:</span>
+                    <span id="highScore" class="score-value">0</span>
+                </div>
+            </div>
+        </header>
+        
+        <div class="game-area">
+            <canvas id="gameCanvas" width="400" height="400"></canvas>
+            <div class="game-overlay" id="gameOverlay">
+                <div class="overlay-content">
+                    <h2 id="overlayTitle">Ready to Play?</h2>
+                    <p id="overlayMessage">Press SPACE to start the game</p>
+                    <div class="controls-info">
+                        <p>Use arrow keys or WASD to move</p>
+                        <p>Eat the food to grow and score points</p>
+                        <p>Don't hit the walls or yourself!</p>
+                    </div>
+                    <button id="startButton" class="game-button">Start Game</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="game-controls">
+            <div class="control-buttons">
+                <button id="pauseButton" class="control-button">⏸️ Pause</button>
+                <button id="restartButton" class="control-button">🔄 Restart</button>
+            </div>
+            <div class="difficulty-selector">
+                <label for="difficulty">Speed:</label>
+                <select id="difficulty" class="difficulty-select">
+                    <option value="slow">Slow</option>
+                    <option value="normal" selected>Normal</option>
+                    <option value="fast">Fast</option>
+                    <option value="insane">Insane</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html> 
