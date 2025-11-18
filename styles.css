@@ -31,6 +31,40 @@ body {
     margin-bottom: 30px;
 }
 
+.logo-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    margin-bottom: 20px;
+    flex-wrap: nowrap;
+}
+
+.game-logo {
+    height: 4rem;
+    width: auto;
+    border-radius: 15px;
+    box-shadow: 0 0 20px rgba(0, 255, 136, 0.4), 0 0 40px rgba(0, 204, 255, 0.3);
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    transition: all 0.3s ease;
+    animation: logoGlow 2s ease-in-out infinite;
+}
+
+.game-logo:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 30px rgba(0, 255, 136, 0.6), 0 0 60px rgba(0, 204, 255, 0.4);
+}
+
+@keyframes logoGlow {
+    0%, 100% { 
+        box-shadow: 0 0 20px rgba(0, 255, 136, 0.4), 0 0 40px rgba(0, 204, 255, 0.3);
+    }
+    50% { 
+        box-shadow: 0 0 30px rgba(0, 255, 136, 0.6), 0 0 50px rgba(255, 0, 136, 0.4);
+    }
+}
+
 .game-title {
     font-size: 2.5rem;
     font-weight: 900;
@@ -40,8 +74,9 @@ body {
     -webkit-text-fill-color: transparent;
     background-clip: text;
     animation: gradientShift 3s ease-in-out infinite;
-    margin-bottom: 20px;
+    margin-bottom: 0;
     text-shadow: 0 0 20px rgba(0, 255, 136, 0.5);
+    white-space: nowrap;
 }
 
 @keyframes gradientShift {
