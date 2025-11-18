@@ -44,11 +44,17 @@ body {
 .game-logo {
     height: 4rem;
     width: auto;
+    max-height: 4rem;
+    max-width: 6rem;
+    object-fit: contain;
     border-radius: 15px;
     box-shadow: 0 0 20px rgba(0, 255, 136, 0.4), 0 0 40px rgba(0, 204, 255, 0.3);
     border: 2px solid rgba(255, 255, 255, 0.2);
     transition: all 0.3s ease;
     animation: logoGlow 2s ease-in-out infinite;
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+    display: block;
 }
 
 .game-logo:hover {
