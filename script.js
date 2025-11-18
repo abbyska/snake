@@ -44,6 +44,13 @@ class SnakeGame {
         this.restartButton = document.getElementById('restartButton');
         this.difficultySelect = document.getElementById('difficulty');
         
+        // Touch/swipe tracking
+        this.touchStartX = 0;
+        this.touchStartY = 0;
+        this.touchEndX = 0;
+        this.touchEndY = 0;
+        this.minSwipeDistance = 30;
+        
         this.initializeGame();
         this.setupEventListeners();
         this.updateHighScoreDisplay();
@@ -79,6 +86,43 @@ class SnakeGame {
             if (this.gameRunning && !this.gamePaused) {
                 this.restartGameLoop();
             }
+        });
+        
+        // Touch/swipe controls
+        this.canvas.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            const touch = e.touches[0];
+            this.touchStartX = touch.clientX;
+            this.touchStartY = touch.clientY;
+        }, { passive: false });
+        
+        this.canvas.addEventListener('touchmove', (e) => {
+            e.preventDefault();
+        }, { passive: false });
+        
+        this.canvas.addEventListener('touchend', (e) => {
+            e.preventDefault();
+            const touch = e.changedTouches[0];
+            this.touchEndX = touch.clientX;
+            this.touchEndY = touch.clientY;
+            this.handleSwipe();
+        }, { passive: false });
+        
+        // Directional button controls
+        const dpadButtons = document.querySelectorAll('.dpad-button');
+        dpadButtons.forEach(button => {
+            button.addEventListener('click', (e) => {
+                e.preventDefault();
+                const direction = button.getAttribute('data-direction');
+                this.handleDirection(direction);
+            });
+            
+            // Touch events for buttons
+            button.addEventListener('touchstart', (e) => {
+                e.preventDefault();
+                const direction = button.getAttribute('data-direction');
+                this.handleDirection(direction);
+            }, { passive: false });
         });
     }
     
@@ -126,6 +170,70 @@ class SnakeGame {
                 break;
             case 'arrowright':
             case 'd':
+                if (this.dx !== -1) { newDx = 1; newDy = 0; }
+                break;
+        }
+        
+        this.nextDx = newDx;
+        this.nextDy = newDy;
+    }
+    
+    handleSwipe() {
+        if (!this.gameRunning || this.gamePaused) return;
+        
+        const deltaX = this.touchEndX - this.touchStartX;
+        const deltaY = this.touchEndY - this.touchStartY;
+        const absDeltaX = Math.abs(deltaX);
+        const absDeltaY = Math.abs(deltaY);
+        
+        // Check if swipe distance is sufficient
+        if (absDeltaX < this.minSwipeDistance && absDeltaY < this.minSwipeDistance) {
+            return;
+        }
+        
+        // Determine primary swipe direction
+        if (absDeltaX > absDeltaY) {
+            // Horizontal swipe
+            if (deltaX > 0 && this.dx !== -1) {
+                // Swipe right
+                this.nextDx = 1;
+                this.nextDy = 0;
+            } else if (deltaX < 0 && this.dx !== 1) {
+                // Swipe left
+                this.nextDx = -1;
+                this.nextDy = 0;
+            }
+        } else {
+            // Vertical swipe
+            if (deltaY > 0 && this.dy !== -1) {
+                // Swipe down
+                this.nextDx = 0;
+                this.nextDy = 1;
+            } else if (deltaY < 0 && this.dy !== 1) {
+                // Swipe up
+                this.nextDx = 0;
+                this.nextDy = -1;
+            }
+        }
+    }
+    
+    handleDirection(direction) {
+        if (!this.gameRunning || this.gamePaused) return;
+        
+        let newDx = this.dx;
+        let newDy = this.dy;
+        
+        switch(direction) {
+            case 'up':
+                if (this.dy !== 1) { newDx = 0; newDy = -1; }
+                break;
+            case 'down':
+                if (this.dy !== -1) { newDx = 0; newDy = 1; }
+                break;
+            case 'left':
+                if (this.dx !== 1) { newDx = -1; newDy = 0; }
+                break;
+            case 'right':
                 if (this.dx !== -1) { newDx = 1; newDy = 0; }
                 break;
         }
