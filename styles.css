@@ -42,11 +42,14 @@ body {
 }
 
 .game-logo {
-    height: 4rem;
-    width: auto;
-    max-height: 4rem;
-    max-width: 6rem;
+    height: 4rem !important;
+    width: 4rem !important;
+    max-height: 4rem !important;
+    max-width: 4rem !important;
+    min-height: 4rem;
+    min-width: 4rem;
     object-fit: contain;
+    flex-shrink: 0;
     border-radius: 15px;
     box-shadow: 0 0 20px rgba(0, 255, 136, 0.4), 0 0 40px rgba(0, 204, 255, 0.3);
     border: 2px solid rgba(255, 255, 255, 0.2);
@@ -55,6 +58,7 @@ body {
     -webkit-transform: translateZ(0);
     transform: translateZ(0);
     display: block;
+    box-sizing: border-box;
 }
 
 .game-logo:hover {
