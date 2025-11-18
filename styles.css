@@ -360,21 +360,58 @@ body {
 
 @media (max-width: 600px) {
     body {
-        padding: 10px;
+        padding: 5px;
     }
     
     .game-container {
-        padding: 20px;
-        margin: 10px auto;
+        padding: 15px;
+        margin: 5px auto;
+    }
+    
+    .game-header {
+        margin-bottom: 15px;
+    }
+    
+    .logo-container {
+        gap: 10px;
+        margin-bottom: 10px;
+    }
+    
+    .game-logo {
+        height: 3rem !important;
+        width: 3rem !important;
+        max-height: 3rem !important;
+        max-width: 3rem !important;
+        min-height: 3rem;
+        min-width: 3rem;
     }
     
     .game-title {
-        font-size: 2rem;
+        font-size: 1.5rem;
     }
     
     .score-board {
-        flex-direction: column;
-        gap: 10px;
+        flex-direction: row;
+        gap: 8px;
+        margin-bottom: 10px;
+    }
+    
+    .score-item {
+        padding: 8px 12px;
+        flex: 1;
+    }
+    
+    .score-label {
+        font-size: 0.75rem;
+        margin-bottom: 3px;
+    }
+    
+    .score-value {
+        font-size: 1.2rem;
+    }
+    
+    .game-area {
+        margin-bottom: 15px;
     }
     
     #gameCanvas {
@@ -384,27 +421,83 @@ body {
         aspect-ratio: 1;
     }
     
+    .overlay-content {
+        padding: 20px;
+    }
+    
+    .overlay-content h2 {
+        font-size: 1.5rem;
+        margin-bottom: 10px;
+    }
+    
+    .overlay-content p {
+        font-size: 0.9rem;
+        margin-bottom: 8px;
+    }
+    
+    .controls-info {
+        margin: 10px 0;
+    }
+    
+    .controls-info p {
+        font-size: 0.8rem;
+        margin-bottom: 5px;
+    }
+    
+    .game-button {
+        padding: 12px 24px;
+        font-size: 1rem;
+        margin-top: 10px;
+    }
+    
     .game-controls {
         flex-direction: column;
         align-items: stretch;
+        gap: 10px;
+        margin-bottom: 10px;
     }
     
     .control-buttons {
         justify-content: center;
+        gap: 10px;
+    }
+    
+    .control-button {
+        padding: 8px 16px;
+        font-size: 0.85rem;
+        flex: 1;
     }
     
     .difficulty-selector {
         justify-content: center;
     }
     
+    .difficulty-selector label {
+        font-size: 0.9rem;
+    }
+    
+    .difficulty-select {
+        font-size: 0.9rem;
+        padding: 8px;
+    }
+    
     .mobile-controls {
         display: flex;
+        margin-top: 10px;
+    }
+    
+    .dpad-container {
+        gap: 3px;
+    }
+    
+    .dpad-row {
+        gap: 3px;
     }
     
     .dpad-button {
-        width: 70px;
-        height: 70px;
-        font-size: 2.5rem;
+        width: 55px;
+        height: 55px;
+        font-size: 2rem;
     }
 }
 
