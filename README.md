@@ -1,4 +1,4 @@
-# 🐍 Snake Game
+# ✨ Neon Slither
 
 A modern, beautiful snake game built with HTML5 Canvas, CSS3, and JavaScript. Features a sleek dark theme with neon accents, smooth animations, and responsive design.
 
