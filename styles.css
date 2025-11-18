@@ -10,9 +10,11 @@ body {
     min-height: 100vh;
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start;
     color: #ffffff;
-    overflow: hidden;
+    overflow-x: hidden;
+    overflow-y: auto;
+    padding: 20px;
 }
 
 .game-container {
@@ -24,6 +26,7 @@ body {
     border: 1px solid rgba(255, 255, 255, 0.1);
     max-width: 500px;
     width: 100%;
+    margin: 20px auto;
 }
 
 .game-header {
@@ -140,6 +143,10 @@ body {
     -webkit-touch-callout: none;
     user-select: none;
     -webkit-user-select: none;
+    max-width: 100%;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1;
 }
 
 #gameCanvas:hover {
@@ -352,9 +359,13 @@ body {
 }
 
 @media (max-width: 600px) {
+    body {
+        padding: 10px;
+    }
+    
     .game-container {
         padding: 20px;
-        margin: 10px;
+        margin: 10px auto;
     }
     
     .game-title {
@@ -368,7 +379,7 @@ body {
     
     #gameCanvas {
         width: 100%;
-        max-width: 350px;
+        max-width: 100%;
         height: auto;
         aspect-ratio: 1;
     }
