@@ -43,6 +43,7 @@ class SnakeGame {
         this.pauseButton = document.getElementById('pauseButton');
         this.restartButton = document.getElementById('restartButton');
         this.difficultySelect = document.getElementById('difficulty');
+        this.tiltButton = document.getElementById('tiltButton');
         
         // Touch/swipe tracking
         this.touchStartX = 0;
@@ -50,6 +51,16 @@ class SnakeGame {
         this.touchEndX = 0;
         this.touchEndY = 0;
         this.minSwipeDistance = 30;
+        
+        // Tilt control
+        this.tiltEnabled = false;
+        this.tiltCalibrated = false;
+        this.calibrationBeta = 0;
+        this.calibrationGamma = 0;
+        this.tiltThreshold = 15; // degrees
+        this.lastTiltUpdate = 0;
+        this.tiltUpdateInterval = 100; // ms
+        this.deviceOrientationHandler = null; // Store handler reference
         
         this.initializeGame();
         this.setupEventListeners();
@@ -124,6 +135,148 @@ class SnakeGame {
                 this.handleDirection(direction);
             }, { passive: false });
         });
+        
+        // Tilt control toggle
+        if (this.tiltButton) {
+            this.tiltButton.addEventListener('click', () => {
+                this.toggleTiltControl();
+            });
+        }
+    }
+    
+    toggleTiltControl() {
+        if (this.tiltEnabled) {
+            // Disable tilt control
+            this.disableTiltControl();
+            return;
+        }
+        
+        // Request permission for iOS 13+
+        if (typeof DeviceOrientationEvent.requestPermission === 'function') {
+            DeviceOrientationEvent.requestPermission()
+                .then(response => {
+                    if (response === 'granted') {
+                        this.enableTiltControl();
+                    } else if (response === 'denied') {
+                        alert('Tilt control requires device orientation permission. Please enable it in your browser settings.');
+                        this.tiltButton.textContent = '📱 Tilt Off';
+                        this.tiltButton.classList.remove('active');
+                    } else {
+                        // Prompt was dismissed
+                        this.tiltButton.textContent = '📱 Tilt Off';
+                        this.tiltButton.classList.remove('active');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error requesting device orientation permission:', error);
+                    this.tiltButton.textContent = '📱 Tilt Off';
+                    this.tiltButton.classList.remove('active');
+                    alert('Unable to access device orientation. Please check your browser settings.');
+                });
+        } else {
+            // Android and older iOS - try to enable directly
+            try {
+                this.enableTiltControl();
+            } catch (error) {
+                console.error('Error enabling tilt control:', error);
+                this.tiltButton.textContent = '📱 Tilt Off';
+                this.tiltButton.classList.remove('active');
+                alert('Tilt control is not supported on this device or browser.');
+            }
+        }
+    }
+    
+    enableTiltControl() {
+        // Check if device orientation is supported
+        if (!window.DeviceOrientationEvent) {
+            alert('Device orientation is not supported on this device.');
+            this.tiltButton.textContent = '📱 Tilt Off';
+            this.tiltButton.classList.remove('active');
+            return;
+        }
+        
+        this.tiltEnabled = true;
+        this.tiltCalibrated = false;
+        this.tiltButton.textContent = '📱 Tilt On';
+        this.tiltButton.classList.add('active');
+        
+        // Store bound handler for proper removal
+        this.deviceOrientationHandler = this.handleDeviceOrientation.bind(this);
+        window.addEventListener('deviceorientation', this.deviceOrientationHandler);
+    }
+    
+    disableTiltControl() {
+        this.tiltEnabled = false;
+        this.tiltButton.textContent = '📱 Tilt Off';
+        this.tiltButton.classList.remove('active');
+        if (this.deviceOrientationHandler) {
+            window.removeEventListener('deviceorientation', this.deviceOrientationHandler);
+            this.deviceOrientationHandler = null;
+        }
+    }
+    
+    handleDeviceOrientation(event) {
+        if (!this.tiltEnabled || !this.gameRunning || this.gamePaused) return;
+        
+        // Check if event has valid data
+        if (event.beta === null || event.gamma === null) {
+            return;
+        }
+        
+        const now = Date.now();
+        if (now - this.lastTiltUpdate < this.tiltUpdateInterval) return;
+        this.lastTiltUpdate = now;
+        
+        // Calibrate on first reading
+        if (!this.tiltCalibrated) {
+            this.calibrationBeta = event.beta || 0;
+            this.calibrationGamma = event.gamma || 0;
+            this.tiltCalibrated = true;
+            return;
+        }
+        
+        // Get relative tilt from calibrated position
+        const beta = (event.beta || 0) - this.calibrationBeta;
+        const gamma = (event.gamma || 0) - this.calibrationGamma;
+        
+        // Determine primary tilt direction
+        const absBeta = Math.abs(beta);
+        const absGamma = Math.abs(gamma);
+        
+        // Only respond if tilt exceeds threshold
+        if (absBeta < this.tiltThreshold && absGamma < this.tiltThreshold) {
+            return;
+        }
+        
+        let newDx = this.dx;
+        let newDy = this.dy;
+        
+        if (absBeta > absGamma) {
+            // Vertical tilt (beta)
+            if (beta < -this.tiltThreshold && this.dy !== 1) {
+                // Tilt forward (down)
+                newDx = 0;
+                newDy = 1;
+            } else if (beta > this.tiltThreshold && this.dy !== -1) {
+                // Tilt backward (up)
+                newDx = 0;
+                newDy = -1;
+            }
+        } else {
+            // Horizontal tilt (gamma)
+            if (gamma < -this.tiltThreshold && this.dx !== 1) {
+                // Tilt left
+                newDx = -1;
+                newDy = 0;
+            } else if (gamma > this.tiltThreshold && this.dx !== -1) {
+                // Tilt right
+                newDx = 1;
+                newDy = 0;
+            }
+        }
+        
+        this.nextDx = newDx;
+        this.nextDy = newDy;
     }
     
     handleKeyPress(e) {

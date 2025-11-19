@@ -241,6 +241,23 @@ body {
     gap: 20px;
 }
 
+.tilt-control-toggle {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+.tilt-button {
+    min-width: 120px;
+}
+
+.tilt-button.active {
+    background: rgba(0, 255, 136, 0.2);
+    border-color: #00ff88;
+    box-shadow: 0 0 15px rgba(0, 255, 136, 0.4);
+    color: #00ff88;
+}
+
 .control-buttons {
     display: flex;
     gap: 15px;
@@ -479,6 +496,17 @@ body {
     .difficulty-select {
         font-size: 0.9rem;
         padding: 8px;
+    }
+    
+    .tilt-control-toggle {
+        width: 100%;
+        margin-top: 5px;
+    }
+    
+    .tilt-button {
+        width: 100%;
+        padding: 10px;
+        font-size: 0.9rem;
     }
     
     .mobile-controls {
